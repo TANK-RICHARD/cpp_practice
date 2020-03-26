@@ -1,0 +1,2 @@
+E:\cpp_code\practice_prj\cpp_practice_prj\Debug\cpp_practice_prj.exe
+E:\cpp_code\practice_prj\cpp_practice_prj\Debug\cpp_practice_prj.pdb
