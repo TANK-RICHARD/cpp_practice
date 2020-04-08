@@ -12,7 +12,7 @@ using namespace std;
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
 // 调试程序: F5 或调试 >“开始调试”菜单
 
-// 入门使用技巧: 
+// 入门使用技巧:
 //   1. 使用解决方案资源管理器窗口添加/管理文件
 //   2. 使用团队资源管理器窗口连接到源代码管理
 //   3. 使用输出窗口查看生成输出和其他消息
@@ -40,7 +40,7 @@ int main()
 	cout << setw(5) << setprecision(5) << 3.141592653589793;
 
 	--------------------------------------------------
-	
+
 	/*
 	int a = 1, b = 4;
 	int& ra = a;
@@ -92,7 +92,7 @@ int main()
 	r1 = d;
 
 	cout << r2 << i << r1 << endl;
-	
+
 	cout << sizeof r2 << "  " << sizeof r1 << endl; // 8, 4
 
 	--------------------------------------------------
@@ -198,7 +198,7 @@ int main()
 #if 0
 class Line
 {
-public: 
+public:
 	int getLength(void);
 	Line(int len); // declare constructor
 	Line(const Line& obj); // declare copy constructor
@@ -251,7 +251,7 @@ int main()
 	Line line2 = line1;
 	display(line2);
 
-	return 0;	
+	return 0;
 }
 #endif
 
@@ -363,7 +363,7 @@ int main(void)
 	bob.eat(bob_ref);
 	bob.walk(bob_ref);
 
-	/* Dog extends Animal with public mode, so all of the public member in class Animal, 
+	/* Dog extends Animal with public mode, so all of the public member in class Animal,
 	   including methods and members, can be accessed */
 	Dog paul;
 	Dog& paul_ref = paul;
@@ -375,7 +375,7 @@ int main(void)
 	paul.run(paul_ref);
 	paul.eat(paul_ref);
 	paul.set_dog_speed(12.4);
-	cout << paul.get_name() << "'s speed is: " << paul.get_dog_speed(paul_ref) << endl;	
+	cout << paul.get_name() << "'s speed is: " << paul.get_dog_speed(paul_ref) << endl;
 }
 #endif
 
@@ -656,7 +656,7 @@ int main(void)
 
 	Rect.setWidth(5);
 	Rect.setHeight(10);
-	
+
 	area = Rect.getArea();
 
 	cout << "total area: " << Rect.getArea() << endl;
@@ -702,6 +702,153 @@ int main()
 #endif
 
 //-------------------- operator reload --------------------------------
+
+#if 0
+class Box
+{
+public:
+	double getVolume(void)
+	{
+		return length * breadth * height;
+	}
+	void setLength(double len)
+	{
+		length = len;
+	}
+
+	void setBreadth(double bre)
+	{
+		breadth = bre;
+	}
+
+	void setHeight(double hei)
+	{
+		height = hei;
+	}
+#if 0
+	// reload operator "+" to plus 2 obj
+	Box operator+(const Box& b)
+	{
+		Box box;
+		box.length = this->length + b.length;
+		box.breadth = this->breadth + b.breadth;
+		box.height = this->height + b.height;
+		return box;
+	}
+#endif
+	// e.g.: Box3 = Box2 + b;
+	Box operator+(const double b)
+	{
+		Box box;
+		box.length = this->length + b; // this points to obj Box2
+		box.breadth = this->breadth + b;
+		box.height = this->height + b;
+		return box; // return and assign the result to obj Box3
+	}
+
+private:
+	double length;
+	double breadth;
+	double height;
+};
+
+int main(void)
+{
+	Box Box1, Box2, Box3;
+	double volume = 0.0;
+
+	Box1.setLength(6.0);
+	Box1.setBreadth(7.0);
+	Box1.setHeight(5.0);
+
+	Box2.setLength(12.0);
+	Box2.setBreadth(13.0);
+	Box2.setHeight(10.0);
+
+	volume = Box1.getVolume();
+	cout << "Volume of Box1: " << volume << endl;
+
+	//Box3 = Box1 + Box2;
+	Box3 = Box1 + 5.6;
+
+	volume = Box3.getVolume();
+	cout << "Volume of Box3: " << volume << endl;
+
+	double a = 5.6, b = 4.5;
+	double c = a + b; // OK
+	cout << "c is : " << c << endl;
+
+	return 0;
+}
+
+#endif
+
+//------------------- method rewrite --------------------------------------------
+// difference between method reload and rewrite:
+// reload: one class includes multi-method which use the same name
+// rewrite: multi-class inherits the base class and rewrite the method
+//			of the same name in base class
+
+class Shape {
+protected:
+	int width, height;
+public:
+	Shape(int a = 0, int b = 0)
+	{
+		width = a;
+		height = b;
+	}
+#if 0
+	virtual int area() // virtual means this method is not entity, so do not use it directly
+	{
+		cout << "Parent class area: " << endl;
+		return 0;
+	}
+#else
+	// pure virtual function
+	virtual int area() = 0;
+#endif
+};
+
+class Rectangle : public Shape
+{
+public:
+	Rectangle(int a = 0, int b = 0) : Shape(a, b) {}
+	int area()
+	{
+		cout << "Rectangle class area: " << endl;
+		return (width * height);
+	}
+};
+
+class Triangle : public Shape
+{
+public:
+	Triangle(int a = 0, int b = 0) : Shape(a, b) {}
+	int area()
+	{
+		cout << "Triangle class area: " << endl;
+		return (width * height / 2);
+	}
+};
+
+int main(void)
+{
+	Shape* shape;
+	Rectangle rec(10, 7);
+	Triangle tri(10, 5);
+
+	shape = &rec;
+	shape->area();
+
+	shape = &tri;
+	shape->area();
+
+	return 0;
+}
+
+//------------------------------------------------------------------------
+
 
 
 
