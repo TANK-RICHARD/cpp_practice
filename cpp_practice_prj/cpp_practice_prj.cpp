@@ -786,6 +786,7 @@ int main(void)
 // rewrite: multi-class inherits the base class and rewrite the method
 //			of the same name in base class
 
+#if 0
 class Shape {
 protected:
 	int width, height;
@@ -843,6 +844,92 @@ int main(void)
 
 	return 0;
 }
+#endif
+//---------------------------- abstraction --------------------------------------------
+#if 0
+class Adder 
+{
+public:
+	Adder(int i = 0)
+	{
+		total = i;
+	}
 
-//------------------------------------------------------------------------
+	void  addNum(int number)
+	{
+		total += number;
+	}
+
+	int getTotal()
+	{
+		return total;
+	}
+private:
+	int total;
+};
+
+int main()
+{
+	Adder a;
+
+	a.addNum(10);
+	a.addNum(20);
+	a.addNum(30);
+
+	cout << "total: " << a.getTotal() << endl;
+	return 0;
+}
+#endif
+
+//-------------------------- data package --------------------------------------------
+
+class Box
+{
+public:
+	double getVolume(void)
+	{
+		return length * breadth * height;
+	}
+private:
+	double length;
+	double breadth;
+	double height;
+};
+
+class Adder
+{
+public:
+	Adder(int i = 0)
+	{
+		total = i;
+	}
+
+	void addNum(int number)
+	{
+		total += number;
+	}
+
+	int getTotal()
+	{
+		return total;
+	}
+
+private:
+	int total;
+};
+
+int main()
+{
+	Adder a;
+
+	a.addNum(10);
+	a.addNum(20);
+	a.addNum(30);
+
+	cout << "total : " << a.getTotal() << endl;
+	return 0;
+}
+
+
+
 
